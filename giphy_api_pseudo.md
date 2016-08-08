@@ -8,7 +8,7 @@
 	var b = $("<button>");
 
 #2. When the button is clicked, 10 gifs of said topic appear on the page
-	* Use a loop that appends a button for each string in the array *	
+	* Use a loop that appends a button for each string in the array	
 	* The click event listener takes in the text of the button clicked
 	* Create a variable called 'url' that holds the api url
 	* Set the data attr to be topics[i]
