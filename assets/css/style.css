@@ -1,0 +1,16 @@
+#buttonsDiv {
+	width: 50%;
+	border: 1px solid red;
+	float: right;
+}
+
+
+#imagesDiv {
+	width: 50%;
+	border: 1px solid red;
+	float: left;
+}
+
+#imagesForm {
+	clear: left;
+}
