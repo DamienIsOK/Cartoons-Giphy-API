@@ -1,48 +1,68 @@
 // ===== Create buttons
-
-var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + $name + "&limit=10&api_key=dc6zaTOxFJmzC";
 var topics = ["hey arnold", "steven universe", "animaniacs", "adventure time"];
-var $newImages = $("<div class='newImageClass'>");
-var $name = $(this).attr("data-name");
-var search;
+// store the results of our jquery selectors so we don't have to call them over and over
+var $imagesDiv = $("#imagesDiv");
+var $buttonsDiv = $("#buttonsDiv");
+var $buttonInput = $("#button-input");
 
-function buttonsCreate(){
-
-$.ajax({url: queryURL, method: 'GET'}).done(function(response){
-
-		$("#buttonsDiv").empty();
-		
-		for (var i = 0; i < topics.length; i++) { // Loop through Topics array
-			var button = $("<button class='newButtons'>");
-			button.attr("data-name", topics[i]); // Give name attr to button element
-			button.text(topics[i]); // Assign text to each button
-			$("#buttonsDiv").append(button); // Append buttons to div
-			console.log(button.text()); // Log button names, just to check
-		} 
-
-	})
+//helper function for generating the url for a given topic
+function generateUrl(topic){
+	var url =  "http://api.giphy.com/v1/gifs/search?q=" + topic + "&limit=10&api_key=dc6zaTOxFJmzC";
+	return url;
 }
 
+function createImage(giphyObj){
 
-function imagesCreate(){
+	var $image = $("<img>")
+					.attr("src", giphyObj.images.fixed_height_still.url)
+					.attr("data-state","still")
+					.on("click",function(e){
+						var $this = $(this);
+						if($this.attr("data-state") == "still"){
+							$this.attr("src",giphyObj.images.fixed_height.url);
+							$this.attr("data-state","animate");
+						}
+						else {
 
-$.ajax({url: queryURL, method: 'GET'}).done(function(response){
+							$this.attr("src",giphyObj.images.fixed_height_still.url);
+							$this.attr("data-state","still");
+						}
+					});
 
-		var $rating = $(this).attr("value", response.data[0].rating); // Set rating name to that in the API
-		var $image = $("<img>").attr("src", response.data[0].images.original.url); // Set image src to that in the API
-
-		$("button").click(function(){
-			$("#imagesDiv").append("<p>" + "Rated: " + $rating + "</p>");
-			$("#imagesDiv").append($image);
-			console.log($rating);
-		})
-	
-	})
+	return $image;
 }
 
-// ===== Call functions
+function createButton(topic){
+	var $newButton = $("<button>");
+	$newButton.attr("name", topic);
+	$newButton.text(topic);
 
-buttonsCreate();
-imagesCreate();
-$(document).on('click', '.newButtons', imagesCreate);
+	$newButton.on("click",function(e){
+		// e.preventDefault();
+		$.ajax({url: generateUrl(topic), method: 'GET'}).done(function(response){
+			$imagesDiv.empty();
+			for(var i = 0,len = response.data.length; i < len; i++){	
+				$imagesDiv.append(createImage(response.data[i]));
+			}
+		});
+		return false;
+	})
 
+	return $newButton;
+}
+
+$("#imagesForm").submit(function(e){
+	// e.preventDefault();
+	var newTopic = $buttonInput.val();
+	var button = createButton(newTopic);
+	$buttonsDiv.append(button);
+	return false;	
+});
+
+function generateInitialButtons(){
+	for(var i = 0, len = topics.length; i < len; i++){
+		$buttonsDiv.append(createButton(topics[i]));
+	}
+}
+
+generateInitialButtons();
