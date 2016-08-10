@@ -1,3 +1,5 @@
+
+// Any questions I have are in the comments below on lines 69, 74, 77 and 111. They are preceeded by ***
 // Create an array of topics that will be used to fill in the text of my buttons as well as search Giphy's api
 var topics = ["hey arnold", "steven universe", "animaniacs", "adventure time"];
 
@@ -49,7 +51,7 @@ function getRating(giphyObj){
 	return rating;
 }
 
-// Craete a funciton that creates a new button that takes in 'topic' as an argument
+// Create a funciton that creates a new button that takes in 'topic' as an argument
 function createButton(topic){
 	// Create a variable that is a jQuery object that creates a new button
 	var $newButton = $("<button>");
@@ -58,33 +60,53 @@ function createButton(topic){
 	// Fill in the body of the button with the text of the topic
 	$newButton.text(topic);
 
+	// Add an event listener to the $newButton jQuery object created on line 55
 	$newButton.on("click",function(e){
-		// e.preventDefault();
+		// Call the ajax method, create an object with the following key/value pairs
+		// url as one key and the generateUrl function result as the value
+		// method as a second key and 'GET' as the second value
+		// Once that is complete, run a function that takes response as an argument
+		// *** I'M STILL NOT REALLY SURE HOW LINE 68 REALLY WORKS ***
 		$.ajax({url: generateUrl(topic), method: 'GET'}).done(function(response){
+			// empty out the imagesDiv so there are not duplicate buttons
 			$imagesDiv.empty();
-			for(var i = 0,len = response.data.length; i < len; i++){	
+			// A For Loop that increments i so long as it is less than the length of our response
+			// *** I DON'T UNDERSTAND WHAT IS OUR RESPONSE ***
+			for(var i = 0; i < response.data.length; i++){
+				// Append the result of our getRating function to the imagesDiv
+				// *** UNABLE TO GET RATINGS FROM FORM IMAGES TO APPEAR
 				$imagesDiv.append(getRating(response.data[i]));
+				// Append the result of our createImage function to the imagesDiv
 				$imagesDiv.append(createImage(response.data[i]));
 			}
 		});
+		// Prevent page from reloading when button is clicked
 		return false;
 	})
-
+	// Return $newButton so I can use it outside of this function
 	return $newButton;
 }
 
+// Add a function on the submit button
 $("#imagesForm").submit(function(e){
-	// e.preventDefault();
+	// When submitted, take the input value and create a new variable called newTopic
 	var newTopic = $buttonInput.val();
+	// Create a new variable called button that returns the result of the createButton function with newTopic as an argument
 	var button = createButton(newTopic);
+	// Append the new button to the buttonsDiv
 	$buttonsDiv.append(button);
+	// Prevent page from reloading when button is clicked
 	return false;	
 });
 
+// This function creates the initial buttons from the topics array
 function generateInitialButtons(){
-	for(var i = 0, len = topics.length; i < len; i++){
+	// For Loop that increments so long as i is less than the length of my array
+	for(var i = 0; i < topics.length; i++){
+		// append the the results of the createButtons function with an argument of topics to the buttonsDiv
 		$buttonsDiv.append(createButton(topics[i]));
 	}
 }
-
+// Call the generateInitialButtons function
+// *** WHEN DOES ONE NEED TO NOT CALL A FUNCTION? I DIDN'T CALL ANY OF THE OTHERS ***
 generateInitialButtons();

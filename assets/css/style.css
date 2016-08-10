@@ -1,16 +1,54 @@
-#buttonsDiv {
-	width: 50%;
-	border: 1px solid red;
-	float: right;
+body {
+	background-color: #30C5FF;
+}
+
+main {
+	width: 95%;
+	padding: 10px 5px 10px 5px;
+	
+
+}
+
+#inner {
+	width: 450px;
+	margin: 0 auto;
+
+}
+
+img {
+	margin: 0 auto;
+	display: block;
+}
+
+#instructions, #imagesForm, #buttonsDiv, #imagesDiv {
+		text-align: center;
+}
+
+#title {
+	margin-bottom: 10px;
+	font-size: 20px;
+	color: yellow;
+	font-weight: bolder;
+	font-family: "Georgia", "Times", sans-serif;
 }
 
 
+#buttonsDiv {
+	width: 500px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+
+	
+}
+
 #imagesDiv {
-	width: 50%;
-	border: 1px solid red;
-	float: left;
+	width: 450;
+	margin-top: 15px;
+	background-color: white;
 }
 
 #imagesForm {
-	clear: left;
+	width: 500px;
+	margin-top: 10px;
+	/*float: right;*/
 }
